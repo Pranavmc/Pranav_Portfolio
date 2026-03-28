@@ -41,14 +41,21 @@ const Contact = () => {
 
     try {
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+      console.log('Sending message to:', `${apiBaseUrl}/contact`);
+      
       const res = await axios.post(`${apiBaseUrl}/contact`, formData);
       setStatus({ type: 'success', msg: res.data.message });
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
-      console.error(err);
+      console.error('API Error details:', {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+        url: err.config?.url
+      });
       setStatus({ 
         type: 'error', 
-        msg: err.response?.data?.error || 'Failed to send message. Is backend server running?' 
+        msg: err.response?.data?.error || `Failed to send message. ${err.message}`
       });
     } finally {
       setLoading(false);
