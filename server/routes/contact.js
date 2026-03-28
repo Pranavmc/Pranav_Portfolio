@@ -16,12 +16,12 @@ router.post('/', async (req, res) => {
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
       try {
         const transporter = nodemailer.createTransport({
-          host: 'smtp.gmail.com',
+          host: 'smtp.sendgrid.net',
           port: 587,
           secure: false, // Use STARTTLS
           auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
+            user: 'apikey', // This must be literally 'apikey' for SendGrid
+            pass: process.env.EMAIL_PASS // Your SendGrid API Key goes here in Render
           },
           connectionTimeout: 10000,
           greetingTimeout: 10000,
