@@ -40,23 +40,25 @@ const Contact = () => {
     setStatus({ type: '', msg: '' });
 
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
-      console.log('Sending message to:', `${apiBaseUrl}/contact`);
+      // Robustly construct the API URL
+      let baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+      // Remove trailing slash if present
+      if (baseUrl.endsWith('/')) baseUrl = baseUrl.slice(0, -1);
       
-      const res = await axios.post(`${apiBaseUrl}/contact`, formData);
+      const fullUrl = `${baseUrl}/contact`;
+      console.log('Attempting POST to:', fullUrl);
+      
+      const res = await axios.post(fullUrl, formData);
       setStatus({ type: 'success', msg: res.data.message });
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
-      console.error('API Error details:', {
-        message: err.message,
-        response: err.response?.data,
-        status: err.response?.status,
-        url: err.config?.url
-      });
-      setStatus({ 
-        type: 'error', 
-        msg: err.response?.data?.error || `Failed to send message. ${err.message}`
-      });
+      console.error('API Error details:', err);
+      const is404 = err.response?.status === 404;
+      const errorMsg = is404 
+        ? `Error 404: Path not found. Check if API URL is correct: ${err.config?.url}`
+        : (err.response?.data?.error || `Failed to send message. ${err.message}`);
+      
+      setStatus({ type: 'error', msg: errorMsg });
     } finally {
       setLoading(false);
     }
