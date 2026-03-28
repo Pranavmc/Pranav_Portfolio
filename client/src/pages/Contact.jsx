@@ -45,8 +45,11 @@ const Contact = () => {
       // Remove trailing slash if present
       if (baseUrl.endsWith('/')) baseUrl = baseUrl.slice(0, -1);
       
-      const fullUrl = `${baseUrl}/contact`;
-      console.log('Attempting POST to:', fullUrl);
+      // Ensure /api is included if it's missing from the base URL
+      const finalBaseUrl = baseUrl.includes('/api') ? baseUrl : `${baseUrl}/api`;
+      const fullUrl = `${finalBaseUrl}/contact`;
+      
+      console.log('Sending message to API:', fullUrl);
       
       const res = await axios.post(fullUrl, formData);
       setStatus({ type: 'success', msg: res.data.message });

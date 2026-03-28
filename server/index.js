@@ -20,6 +20,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/contact', contactRoutes);
+app.use('/contact', contactRoutes); // Fallback for easier frontend setup
 
 app.get('/', (req, res) => {
   res.json({ message: 'Pranav Portfolio API is running 🚀' });
