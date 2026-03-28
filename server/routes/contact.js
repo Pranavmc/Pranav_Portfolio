@@ -14,27 +14,38 @@ router.post('/', async (req, res) => {
     await newContact.save();
 
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS
-        }
-      });
+      try {
+        const transporter = nodemailer.createTransport({
+          host: 'smtp.gmail.com',
+          port: 465,
+          secure: true, // Use SSL
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+          },
+          connectionTimeout: 10000, // 10 seconds
+          greetingTimeout: 10000,
+          socketTimeout: 10000
+        });
 
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: process.env.EMAIL_RECEIVER || process.env.EMAIL_USER,
-        subject: `New Portfolio Contact from ${name}: ${subject || 'No Subject'}`,
-        text: `You have received a new message from your portfolio contact form.\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-        html: `<p>You have received a new message from your portfolio contact form.</p>
-               <p><strong>Name:</strong> ${name}</p>
-               <p><strong>Email:</strong> ${email}</p>
-               <p><strong>Message:</strong></p>
-               <p>${message.replace(/\n/g, '<br>')}</p>`
-      };
+        const mailOptions = {
+          from: process.env.EMAIL_USER,
+          to: process.env.EMAIL_RECEIVER || process.env.EMAIL_USER,
+          subject: `New Portfolio Contact from ${name}: ${subject || 'No Subject'}`,
+          text: `You have received a new message from your portfolio contact form.\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+          html: `<p>You have received a new message from your portfolio contact form.</p>
+                 <p><strong>Name:</strong> ${name}</p>
+                 <p><strong>Email:</strong> ${email}</p>
+                 <p><strong>Message:</strong></p>
+                 <p>${message.replace(/\n/g, '<br>')}</p>`
+        };
 
-      await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
+        console.log('✅ Email notification sent successfully');
+      } catch (mailErr) {
+        console.error('❌ Email notification failed:', mailErr.message);
+        // We do NOT throw here so the user still gets a success response for the DB save
+      }
     } else {
       console.warn("Nodemailer is not configured (EMAIL_USER or EMAIL_PASS missing). Email was not sent.");
     }
