@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
           },
-          connectionTimeout: 10000, // 10 seconds
+          connectionTimeout: 10000,
           greetingTimeout: 10000,
           socketTimeout: 10000
         });
@@ -40,16 +40,20 @@ router.post('/', async (req, res) => {
                  <p>${message.replace(/\n/g, '<br>')}</p>`
         };
 
-        await transporter.sendMail(mailOptions);
-        console.log('✅ Email notification sent successfully');
-      } catch (mailErr) {
-        console.error('❌ Email notification failed:', mailErr.message);
-        // We do NOT throw here so the user still gets a success response for the DB save
+        // RUN EMAIL IN BACKGROUND (Non-blocking)
+        console.log('📧 Starting background email task...');
+        transporter.sendMail(mailOptions)
+          .then(() => console.log('✅ Email notification sent successfully'))
+          .catch(mailErr => console.error('❌ Email notification failed:', mailErr.message));
+        
+      } catch (err) {
+        console.error('❌ Transporter creation failed:', err.message);
       }
     } else {
       console.warn("Nodemailer is not configured (EMAIL_USER or EMAIL_PASS missing). Email was not sent.");
     }
 
+    console.log('✅ Message saved to MongoDB. Sending success response.');
     res.status(201).json({ success: true, message: 'Message sent successfully! 🎉' });
   } catch (err) {
     console.error('Contact route error:', err);
