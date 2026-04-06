@@ -24,7 +24,7 @@ Welcome to my personal portfolio! This project is a complete modernization of my
 **Backend (`server/`)**
 - Node.js & Express
 - MongoDB & Mongoose (NoSQL Database)
-- CORS, Dotenv, Nodemailer, and SMTP
+- CORS, Dotenv, and SendGrid API
 
 ---
 
@@ -62,15 +62,15 @@ Open your web browser and go to:
 
 As of April 6, 2026, a practical free setup for this project is:
 - `Vercel Hobby` for the frontend
-- `Koyeb Free Web Service` for the backend
+- `Render Free Web Service` for the backend
 - `MongoDB Atlas Free` for the database
-- `SMTP` for email notifications from the backend
+- `SendGrid API` for email notifications from the backend
 
 After finishing this checklist:
 1. your frontend will be deployed on Vercel
-2. your backend will be deployed on Koyeb
+2. your backend will be deployed on Render
 3. contact form data will be stored in MongoDB Atlas
-4. you will receive an email notification for every message through SMTP
+4. you will receive an email notification for every message through SendGrid
 
 ### Checklist
 
@@ -78,7 +78,7 @@ After finishing this checklist:
 
 1. Create a GitHub repository.
 2. Push the full project to GitHub.
-3. Make sure `client/`, `server/`, [koyeb.yaml](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/koyeb.yaml), and [client/vercel.json](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/client/vercel.json) are included.
+3. Make sure `client/`, `server/`, [render.yaml](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/render.yaml), and [client/vercel.json](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/client/vercel.json) are included.
 
 #### 2. Create a free MongoDB Atlas database
 
@@ -94,41 +94,32 @@ Example:
 MONGO_URI=mongodb+srv://username:password@clustername.mongodb.net/pranavportfolio?retryWrites=true&w=majority
 ```
 
-#### 3. Configure SMTP for contact form email notifications
+#### 3. Configure SendGrid for contact form email notifications
 
-This project now sends email using `nodemailer` and a normal SMTP server from the backend in [server/routes/contact.js](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/server/routes/contact.js).
+This project now sends email using the official `@sendgrid/mail` package from the backend in [server/routes/contact.js](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/server/routes/contact.js).
 
 When someone submits the contact form:
 1. the frontend sends the data to the backend
 2. the backend saves the message in MongoDB
-3. the backend sends you an email notification through SMTP
+3. the backend sends you an email notification through SendGrid
 
-You need SMTP credentials from an email account or mail service that gives you:
-- SMTP host
-- SMTP port
-- SMTP username
-- SMTP password
-- a sender email
+You need these SendGrid values:
+- a SendGrid API key
+- a verified sender email
+- a sender name
+- the inbox where you want to receive notifications
 
 Use values like:
 
 ```text
-SMTP_HOST=smtp.yourprovider.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=your-smtp-username
-SMTP_PASS=your-smtp-password
+SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxx
 EMAIL_FROM=your-sender-email@yourdomain.com
 EMAIL_FROM_NAME=Portfolio
 EMAIL_RECEIVER=yourname@gmail.com
 ```
 
 What these mean:
-- `SMTP_HOST`: your SMTP server hostname
-- `SMTP_PORT`: usually `587` for STARTTLS or `465` for secure SMTP
-- `SMTP_SECURE`: `false` for port `587`, `true` for port `465`
-- `SMTP_USER`: your SMTP login username
-- `SMTP_PASS`: your SMTP login password
+- `SENDGRID_API_KEY`: lets your backend send emails through SendGrid
 - `EMAIL_FROM`: the sender email address
 - `EMAIL_FROM_NAME`: display name shown in the email
 - `EMAIL_RECEIVER`: the inbox where you receive contact form notifications
@@ -136,20 +127,12 @@ What these mean:
 Example backend usage:
 
 ```js
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 
-async function sendWithSMTP({ name, email, subject, message }) {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT || 587),
-    secure: String(process.env.SMTP_SECURE || 'false') === 'true',
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
+async function sendWithSendGrid({ name, email, subject, message }) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-  await transporter.sendMail({
+  await sgMail.send({
     from: `"${process.env.EMAIL_FROM_NAME || 'Portfolio'}" <${process.env.EMAIL_FROM}>`,
     to: process.env.EMAIL_RECEIVER,
     replyTo: email,
@@ -169,11 +152,7 @@ Set `server/.env` like this:
 MONGO_URI=your-mongodb-connection-string
 PORT=5000
 ALLOWED_ORIGINS=http://localhost:5173
-SMTP_HOST=smtp.yourprovider.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=your-smtp-username
-SMTP_PASS=your-smtp-password
+SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxx
 EMAIL_FROM=your-sender-email@yourdomain.com
 EMAIL_FROM_NAME=Portfolio
 EMAIL_RECEIVER=yourname@gmail.com
@@ -211,32 +190,25 @@ Then:
 4. confirm the email arrives at `EMAIL_RECEIVER`
 
 If email does not arrive, check:
-- `SMTP_HOST`
-- `SMTP_PORT`
-- `SMTP_USER`
-- `SMTP_PASS`
+- `SENDGRID_API_KEY`
 - `EMAIL_FROM`
 - `EMAIL_FROM_NAME`
 - spam folder
 
-#### 6. Deploy the backend to Koyeb
+#### 6. Deploy the backend to Render
 
-1. Create a Koyeb account.
-2. Add a payment card to complete account validation.
-3. Connect GitHub.
-4. Create a new App from your repository.
-5. Use [koyeb.yaml](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/koyeb.yaml), or manually point Koyeb to the `server` directory.
-6. Choose the `free` instance.
+1. Create a Render account.
+2. Connect GitHub.
+3. Click `New +` and choose `Blueprint`.
+4. Select this repository.
+5. Render will detect [render.yaml](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/render.yaml).
+6. Keep the plan as `Free`.
 7. Add these environment variables:
 
 ```text
 MONGO_URI=your-mongodb-connection-string
 ALLOWED_ORIGINS=https://your-project-name.vercel.app
-SMTP_HOST=smtp.yourprovider.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=your-smtp-username
-SMTP_PASS=your-smtp-password
+SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxx
 EMAIL_FROM=your-sender-email@yourdomain.com
 EMAIL_FROM_NAME=Portfolio
 EMAIL_RECEIVER=yourname@gmail.com
@@ -248,7 +220,7 @@ EMAIL_RECEIVER=yourname@gmail.com
 Example:
 
 ```text
-https://your-service-name.koyeb.app
+https://your-service-name.onrender.com
 ```
 
 #### 7. Deploy the frontend to Vercel
@@ -261,7 +233,7 @@ https://your-service-name.koyeb.app
 6. Add this environment variable:
 
 ```text
-VITE_API_BASE_URL=https://your-service-name.koyeb.app/api
+VITE_API_BASE_URL=https://your-service-name.onrender.com/api
 ```
 
 7. Deploy.
@@ -275,7 +247,7 @@ https://your-project-name.vercel.app
 
 #### 8. Connect frontend and backend
 
-1. Go back to Koyeb.
+1. Go back to Render.
 2. Set `ALLOWED_ORIGINS` to your real Vercel URL.
 3. Save and redeploy if required.
 
@@ -294,34 +266,29 @@ ALLOWED_ORIGINS=https://your-project-name.vercel.app
 - frontend works
 - backend receives the request
 - MongoDB stores the message
-- SMTP sends the email to your inbox
+- SendGrid sends the email to your inbox
 
 #### 10. Final production example
 
 ```text
-Koyeb
+Render
 MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/pranavportfolio?retryWrites=true&w=majority
 ALLOWED_ORIGINS=https://your-project-name.vercel.app
-SMTP_HOST=smtp.yourprovider.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=your-smtp-username
-SMTP_PASS=your-smtp-password
+SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxx
 EMAIL_FROM=your-sender-email@yourdomain.com
 EMAIL_FROM_NAME=Portfolio
 EMAIL_RECEIVER=yourname@gmail.com
 
 Vercel
-VITE_API_BASE_URL=https://your-service-name.koyeb.app/api
+VITE_API_BASE_URL=https://your-service-name.onrender.com/api
 ```
 
 #### 11. Important notes
 
-- Koyeb offers one free web service per organization as of April 6, 2026.
-- Koyeb requires a payment card for account validation even when you use the free service.
+- Render free services block outbound SMTP ports on free instances, which is why this project uses SendGrid API instead of SMTP.
 - Vercel Hobby is enough for most portfolio frontends.
 - MongoDB Atlas free is enough for low-volume contact form storage.
-- Koyeb allows outbound SMTP on port `587`, but port `25` is blocked.
+- SendGrid requires you to verify the sender email or domain before email delivery works.
 - This project saves the message in MongoDB before trying to send the email notification.
 
 ---

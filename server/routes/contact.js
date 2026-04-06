@@ -1,20 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Contact = require('../models/Contact');
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 
-async function sendWithSMTP({ name, email, subject, message }) {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT || 587),
-    secure: String(process.env.SMTP_SECURE || 'false') === 'true',
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
+async function sendWithSendGrid({ name, email, subject, message }) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-  await transporter.sendMail({
+  await sgMail.send({
     from: `"${process.env.EMAIL_FROM_NAME || 'Portfolio'}" <${process.env.EMAIL_FROM}>`,
     to: process.env.EMAIL_RECEIVER || process.env.EMAIL_FROM,
     replyTo: email,
@@ -39,17 +31,14 @@ router.post('/', async (req, res) => {
     await newContact.save();
 
     if (
-      process.env.SMTP_HOST &&
-      process.env.SMTP_PORT &&
-      process.env.SMTP_USER &&
-      process.env.SMTP_PASS &&
+      process.env.SENDGRID_API_KEY &&
       process.env.EMAIL_FROM
     ) {
-      sendWithSMTP({ name, email, subject, message })
-        .then(() => console.log('✅ SMTP email notification sent successfully'))
-        .catch((mailErr) => console.error('❌ SMTP email notification failed:', mailErr.message));
+      sendWithSendGrid({ name, email, subject, message })
+        .then(() => console.log('✅ SendGrid email notification sent successfully'))
+        .catch((mailErr) => console.error('❌ SendGrid email notification failed:', mailErr.message));
     } else {
-      console.warn('SMTP is not configured. Message was saved without sending an email notification.');
+      console.warn('SendGrid is not configured. Message was saved without sending an email notification.');
     }
 
     console.log('✅ Message saved to MongoDB. Sending success response.');
