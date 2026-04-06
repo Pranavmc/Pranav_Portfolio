@@ -7,9 +7,23 @@ const contactRoutes = require('./routes/contact');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error('CORS blocked for this origin.'));
+    },
+  })
+);
 app.use(express.json());
 
 // Request logger
@@ -24,6 +38,10 @@ app.use('/contact', contactRoutes); // Fallback for easier frontend setup
 
 app.get('/', (req, res) => {
   res.json({ message: 'Pranav Portfolio API is running 🚀' });
+});
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
 });
 
 // MongoDB Connection
