@@ -61,13 +61,13 @@ Open your web browser and go to:
 ## ☁️ Free Deployment
 
 As of April 6, 2026, a practical free setup for this project is:
-- `Vercel Hobby` for the frontend
+- `Netlify Free` for the frontend
 - `Render Free Web Service` for the backend
 - `MongoDB Atlas Free` for the database
 - `SendGrid API` for email notifications from the backend
 
 After finishing this checklist:
-1. your frontend will be deployed on Vercel
+1. your frontend will be deployed on Netlify
 2. your backend will be deployed on Render
 3. contact form data will be stored in MongoDB Atlas
 4. you will receive an email notification for every message through SendGrid
@@ -78,7 +78,7 @@ After finishing this checklist:
 
 1. Create a GitHub repository.
 2. Push the full project to GitHub.
-3. Make sure `client/`, `server/`, [render.yaml](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/render.yaml), and [client/vercel.json](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/client/vercel.json) are included.
+3. Make sure `client/`, `server/`, [render.yaml](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/render.yaml), and [netlify.toml](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/netlify.toml) are included.
 
 #### 2. Create a free MongoDB Atlas database
 
@@ -207,7 +207,7 @@ If email does not arrive, check:
 
 ```text
 MONGO_URI=your-mongodb-connection-string
-ALLOWED_ORIGINS=https://your-project-name.vercel.app
+ALLOWED_ORIGINS=https://your-project-name.netlify.app
 SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxx
 EMAIL_FROM=your-sender-email@yourdomain.com
 EMAIL_FROM_NAME=Portfolio
@@ -223,43 +223,42 @@ Example:
 https://your-service-name.onrender.com
 ```
 
-#### 7. Deploy the frontend to Vercel
+#### 7. Deploy the frontend to Netlify
 
-1. Create a Vercel account.
+1. Create a Netlify account.
 2. Connect GitHub.
 3. Import the same repository.
-4. Set `Root Directory` to `client`.
-5. Confirm framework `Vite`.
-6. Add this environment variable:
+4. Netlify will use [netlify.toml](/c:/Users/ignit/OneDrive/Desktop/Pranav%20Portfoio/netlify.toml) from the repository root.
+5. Add this environment variable:
 
 ```text
 VITE_API_BASE_URL=https://your-service-name.onrender.com/api
 ```
 
-7. Deploy.
-8. Copy the frontend URL.
+6. Deploy the site.
+7. Copy the frontend URL.
 
 Example:
 
 ```text
-https://your-project-name.vercel.app
+https://your-project-name.netlify.app
 ```
 
 #### 8. Connect frontend and backend
 
 1. Go back to Render.
-2. Set `ALLOWED_ORIGINS` to your real Vercel URL.
+2. Set `ALLOWED_ORIGINS` to your real Netlify URL.
 3. Save and redeploy if required.
 
 Example:
 
 ```text
-ALLOWED_ORIGINS=https://your-project-name.vercel.app
+ALLOWED_ORIGINS=https://your-project-name.netlify.app
 ```
 
 #### 9. Test the live deployed contact form
 
-1. Open your Vercel site.
+1. Open your Netlify site.
 2. Go to the contact page.
 3. Submit a message.
 4. Confirm:
@@ -273,20 +272,20 @@ ALLOWED_ORIGINS=https://your-project-name.vercel.app
 ```text
 Render
 MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/pranavportfolio?retryWrites=true&w=majority
-ALLOWED_ORIGINS=https://your-project-name.vercel.app
+ALLOWED_ORIGINS=https://your-project-name.netlify.app
 SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxx
 EMAIL_FROM=your-sender-email@yourdomain.com
 EMAIL_FROM_NAME=Portfolio
 EMAIL_RECEIVER=yourname@gmail.com
 
-Vercel
+Netlify
 VITE_API_BASE_URL=https://your-service-name.onrender.com/api
 ```
 
 #### 11. Important notes
 
 - Render free services block outbound SMTP ports on free instances, which is why this project uses SendGrid API instead of SMTP.
-- Vercel Hobby is enough for most portfolio frontends.
+- Netlify Free is enough for most portfolio frontends.
 - MongoDB Atlas free is enough for low-volume contact form storage.
 - SendGrid requires you to verify the sender email or domain before email delivery works.
 - This project saves the message in MongoDB before trying to send the email notification.
