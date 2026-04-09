@@ -33,8 +33,8 @@ const Projects = () => {
       tech: ["Git", "GitHub", "Jenkins", "Docker", "Docker Hub", "AWS EC2", "Linux", "Shell Scripting"],
       icon: <FaServer size={30} />,
       color: "var(--accent-violet)",
-      link: "#",
-      github: "#"
+      link: "https://github.com/Pranavmc/Automated-CI-CD",
+      github: "https://github.com/Pranavmc/Automated-CI-CD"
     },
     {
       title: "End-to-End Infra Automation & Deployment",
@@ -53,8 +53,8 @@ const Projects = () => {
       tech: ["Git", "GitHub", "Jenkins", "Docker", "AWS", "Linux", "Shell Scripting"],
       icon: <FaServer size={30} />,
       color: "var(--accent-magenta)",
-      link: "#",
-      github: "#"
+      link: "https://github.com/Pranavmc/multi-env-cicd",
+      github: "https://github.com/Pranavmc/multi-env-cicd"
     }
   ];
 
