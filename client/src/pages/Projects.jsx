@@ -13,8 +13,8 @@ const Projects = () => {
       tech: ["React.js", "Node.js", "MongoDB", "Python", "AES Encryption", "Docker", "AWS"],
       icon: <FaShieldAlt size={30} />,
       color: "var(--accent-cyan)",
-      link: "#",
-      github: "#"
+      link: "https://securefintech.netlify.app",
+      github: "https://github.com/Pranavmc/fintech"
     },
     {
       title: "TrackaFarm (Smart Livestock & AI Diary)",
