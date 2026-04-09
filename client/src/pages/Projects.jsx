@@ -23,8 +23,8 @@ const Projects = () => {
       tech: ["MongoDB", "Express.js", "React.js", "Node.js", "Python (ARIMA)", "Docker", "AWS"],
       icon: <FaLeaf size={30} />,
       color: "var(--accent-magenta)",
-      link: "#",
-      github: "#"
+      link: "https://trackafarm.netlify.app",
+      github: "https://github.com/Pranavmc/Trackafarm"
     },
     {
       title: "Automated CI/CD Pipeline for a Containerized Web Application",
