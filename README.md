@@ -1,6 +1,6 @@
 # 🚀 Pranav Mallinath Chougale - Modern MERN Portfolio
 
-[![Deploy to Netlify](https://img.shields.io/badge/Deploy-Netlify-00AD9F.svg?style=for-the-badge&logo=netlify)](https://www.netlify.com/)
+[![Deploy with Vercel](https://img.shields.io/badge/Deploy-Vercel-000000.svg?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/new)
 [![Deploy to Render](https://img.shields.io/badge/Deploy-Render-46E3B7.svg?style=for-the-badge&logo=render&logoColor=white)](https://render.com/)
 [![Database-MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248.svg?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/atlas)
 
@@ -39,72 +39,79 @@ npm run dev
 
 ---
 
-## ☁️ Free Deployment Guide
+## ☁️ Ultimate Free Deployment Guide
 
-Follow these steps to host your portfolio for **$0/month** using industry-standard free tiers.
+Follow these granular steps to host your portfolio for **$0/month**.
 
-### 1. Database Setup (MongoDB Atlas)
-1.  Create a free account at [MongoDB Atlas](https://www.mongodb.com/atlas).
-2.  Deploy a "Shared" cluster (Free).
-3.  Add a Database User and allow network access (IP `0.0.0.0/0`).
-4.  Copy your Connection String.
+### Phase 1: Database Setup (MongoDB Atlas)
+1.  **Sign Up**: Go to [MongoDB Atlas](https://www.mongodb.com/atlas) and create a free account.
+2.  **Create Cluster**: 
+    *   Click **"Create"** and select the **"M0"** (Free) tier.
+    *   Choose a provider (AWS/Google Cloud) and a region near you.
+    *   Click **"Create Deployment"**.
+3.  **Security - Quickstart**:
+    *   **Username/Password**: Create a user (e.g., `pranav_user`) and a strong password. **Save this!**
+    *   **IP Access List**: Click **"Add My Current IP Address"** AND click **"Add IP Address"** and enter `0.0.0.0/0` (this allows Render/Vercel to connect).
+4.  **Connect**:
+    *   Go to **"Database"** > **"Connect"**.
+    *   Select **"Drivers"** > **"Node.js"**.
+    *   Copy the connection string (it looks like `mongodb+srv://...`).
+    *   Replace `<password>` with your actual password in the string.
 
-### 2. Email Setup (SendGrid)
-1.  Create a free [SendGrid account](https://sendgrid.com/).
-2.  Create an API Key with "Full Access".
-3.  Verify your "Sender Identity" (Email).
+### Phase 2: Email Setup (SendGrid)
+1.  **Account**: Create a free account at [SendGrid](https://sendgrid.com/).
+2.  **Sender Verification**:
+    *   Go to **"Settings"** > **"Sender Authentication"**.
+    *   Click **"Verify a Single Sender"**.
+    *   Fill out the form with your name and email. Check your inbox to verify.
+3.  **API Key**:
+    *   Go to **"Settings"** > **"API Keys"**.
+    *   Click **"Create API Key"** > **"Full Access"**.
+    *   **Copy and save this key immediately!** (It won't be shown again).
 
-### 3. Backend Deployment (Render)
-1.  Go to [Render.com](https://render.com/) and connect your GitHub repository.
-2.  Click **New +** > **Blueprint**.
-3.  Render will automatically use `render.yaml` to configure the service.
-4.  **Important**: Set the following Environment Variables in the Render Dashboard:
+### Phase 3: Backend Deployment (Render)
+1.  **Connect GitHub**: Log in to [Render](https://render.com/) and click **"New +"** > **"Web Service"**.
+2.  **Repository**: Select your `Pranav_Portfolio` repository.
+3.  **Settings**:
+    *   **Name**: `portfolio-api` (or similar).
+    *   **Root Directory**: `server`
+    *   **Build Command**: `npm install`
+    *   **Start Command**: `npm start`
+    *   **Plan**: `Free`
+4.  **Environment Variables**: Click **"Advanced"** > **"Add Environment Variable"**:
+    *   `MONGO_URI`: (Your string from Phase 1)
+    *   `ALLOWED_ORIGINS`: (Enter `https://temp-placeholder.vercel.app` for now, update later)
+    *   `SENDGRID_API_KEY`: (Your key from Phase 2)
+    *   `EMAIL_FROM`: (Your verified email from Phase 2)
+    *   `EMAIL_FROM_NAME`: `Portfolio Notification`
+    *   `EMAIL_RECEIVER`: (The email where you want to receive messages)
+5.  **Deploy**: Click **"Create Web Service"**. Copy the service URL (e.g., `https://api.onrender.com`).
 
-| Variable | Description | Example |
-| :--- | :--- | :--- |
-| `MONGO_URI` | MongoDB Atlas Connection String | `mongodb+srv://...` |
-| `ALLOWED_ORIGINS` | Your Netlify URL (after step 4) | `https://your-site.netlify.app` |
-| `SENDGRID_API_KEY` | Your SendGrid API Key | `SG.xxxxx...` |
-| `EMAIL_FROM` | Your verified SendGrid email | `hello@yourdomain.com` |
-| `EMAIL_FROM_NAME` | Name shown in the inbox | `Portfolio Bot` |
-| `EMAIL_RECEIVER` | Where you want to receive emails | `yourname@gmail.com` |
+### Phase 4: Frontend Deployment (Vercel)
+1.  **Project**: Log in to [Vercel](https://vercel.com/) and click **"Add New"** > **"Project"**.
+2.  **GitHub**: Import your repository.
+3.  **Configure Project**:
+    *   **Root Directory**: Click "Edit" and select the `client` folder.
+    *   **Framework Preset**: Select **"Vite"** (should be auto-detected).
+    *   **Build & Output Settings**: Should be `npm run build` and `dist`.
+4.  **Environment Variables**: Click **"Environment Variables"**:
+    *   Add `VITE_API_BASE_URL`: (Your Render URL from Phase 3 + `/api`)
+    *   *Example: `https://portfolio-api.onrender.com/api`*
+5.  **Deploy**: Click **"Deploy"**. Copy your new Vercel URL (e.g., `https://pranav-portfolio.vercel.app`).
 
-### 4. Frontend Deployment (Netlify)
-1.  Connect your repo to [Netlify](https://www.netlify.com/).
-2.  Netlify will use the `netlify.toml` file automatically.
-3.  Add this Environment Variable:
-
-| Variable | Description | Example |
-| :--- | :--- | :--- |
-| `VITE_API_BASE_URL` | Your Render Service URL | `https://your-api.onrender.com/api` |
+### Phase 5: Final Handshake
+1.  **CORS**: Go back to **Render** > Your Service > **Settings** > **Environment**.
+2.  Update `ALLOWED_ORIGINS` to your actual Vercel URL.
+3.  **Redeploy**: Render will automatically redeploy when you save the variables.
 
 ---
 
-## 📂 Project Architecture
-
-```text
-├── /client                   # REACT FRONTEND
-│   ├── /src
-│   │   ├── /components       # UI Components (Navbar, Footer, etc.)
-│   │   ├── /pages            # Page Layouts (Home, About, Projects, etc.)
-│   │   └── App.jsx           # Routing & Design Tokens
-│   └── netlify.toml          # Netlify Deployment Config
-│
-├── /server                   # EXPRESS BACKEND
-│   ├── /models               # Mongoose Schemas
-│   ├── /routes               # API Endpoint Logic
-│   └── index.js              # Server Entry Point
-│
-├── render.yaml               # Render Infrastructure-as-Code
-└── README.md                 # You are here!
-```
-
----
-
-## 🛠️ Troubleshooting
-*   **CORS Issues**: Ensure your Netlify URL is added to the `ALLOWED_ORIGINS` variable on Render.
-*   **Spin-up Delay**: Render's free tier spins down after inactivity. The first request might take 30-50 seconds to respond.
-*   **Email Not Sending**: Double-check your SendGrid API key and ensure your "Sender Identity" matches the `EMAIL_FROM` variable.
+## 🛠️ Performance & Troubleshooting
+*   **Cold Starts**: Render's Free Tier pauses after 15 mins of inactivity. The first contact form submission might take **~30 seconds** to trigger.
+*   **Redirects**: The `client/vercel.json` file handles SPA routing, ensuring that page refreshes on sub-routes don't trigger 404s.
+*   **Environment Sync**: Ensure `VITE_API_BASE_URL` on Vercel always ends with `/api`.
 
 ---
 *Created with ❤️ by [Pranavmc](https://github.com/Pranavmc)*
+
+
