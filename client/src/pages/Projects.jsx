@@ -13,7 +13,7 @@ const Projects = () => {
       tech: ["React.js", "Node.js", "MongoDB", "Python", "AES Encryption", "Docker", "AWS"],
       icon: <FaShieldAlt size={30} />,
       color: "var(--accent-cyan)",
-      link: "https://github.com/Pranavmc/fintech",
+      link: "https://securefintech.netlify.app/",
       github: "https://github.com/Pranavmc/fintech"
     },
     {
@@ -23,7 +23,7 @@ const Projects = () => {
       tech: ["MongoDB", "Express.js", "React.js", "Node.js", "Python (ARIMA)", "Docker", "AWS"],
       icon: <FaLeaf size={30} />,
       color: "var(--accent-magenta)",
-      link: "https://github.com/Pranavmc/Trackafarm",
+      link: "https://trackafarm.netlify.app/",
       github: "https://github.com/Pranavmc/Trackafarm"
     },
     {
