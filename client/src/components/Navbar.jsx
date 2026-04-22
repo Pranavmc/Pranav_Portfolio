@@ -54,7 +54,7 @@ const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`navbar ${scrolled ? 'navbar-scrolled glass-effect' : ''}`}
+        className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}
       >
         <div className="navbar-container">
           <NavLink to="/" className="navbar-logo text-gradient">
@@ -77,24 +77,14 @@ const Navbar = () => {
             ))}
           </ul>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             {/* Theme Toggle Button */}
             <button 
               onClick={toggleTheme} 
               className="theme-toggle"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--text-light)',
-                fontSize: '1.2rem',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'color 0.3s ease'
-              }}
+              aria-label="Toggle theme"
             >
-              {isLightMode ? <FaMoon hover={{color: 'var(--accent-violet)'}} /> : <FaSun style={{color: '#ffd700'}} />}
+              {isLightMode ? <FaMoon /> : <FaSun style={{ color: 'var(--accent-gold)' }} />}
             </button>
 
             {/* Mobile Icon */}

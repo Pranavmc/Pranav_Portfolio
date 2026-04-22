@@ -23,7 +23,7 @@ const Projects = () => {
       tech: ["MongoDB", "Express.js", "React.js", "Node.js", "Python (ARIMA)", "Docker", "AWS"],
       icon: <FaLeaf size={30} />,
       color: "var(--accent-magenta)",
-      link: "https://trackafarm.netlify.app/",
+      link: "https://trackafarm.vercel.app",
       github: "https://github.com/Pranavmc/Trackafarm"
     },
     {

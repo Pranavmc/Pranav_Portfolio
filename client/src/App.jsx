@@ -13,14 +13,16 @@ function App() {
     <Router>
       {/* Global Animated Aurora Background */}
       <div className="aurora-bg">
+        <div className="aurora-grid"></div>
+        <div className="aurora-noise"></div>
         <div className="aurora-blob aurora-blob-1"></div>
         <div className="aurora-blob aurora-blob-2"></div>
         <div className="aurora-blob aurora-blob-3"></div>
       </div>
       
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
+      <div className="app-shell">
         <Navbar />
-        <main style={{ flex: 1 }}>
+        <main className="app-main">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
