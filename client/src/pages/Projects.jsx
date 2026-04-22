@@ -13,7 +13,7 @@ const Projects = () => {
       tech: ["React.js", "Node.js", "MongoDB", "Python", "AES Encryption", "Docker", "AWS"],
       icon: <FaShieldAlt size={30} />,
       color: "var(--accent-cyan)",
-      link: "https://securefintech.netlify.app/",
+      link: "https://fintech-black.vercel.app",
       github: "https://github.com/Pranavmc/fintech"
     },
     {
