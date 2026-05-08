@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaExternalLinkAlt, FaGithub, FaShieldAlt, FaLeaf, FaServer, FaArrowLeft, FaReact, FaDocker, FaLayerGroup } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaGithub, FaShieldAlt, FaLeaf, FaServer, FaArrowLeft, FaReact, FaDocker, FaLayerGroup, FaCloud } from 'react-icons/fa';
 
 const Projects = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -55,6 +55,16 @@ const Projects = () => {
       color: "var(--accent-magenta)",
       link: "https://github.com/Pranavmc/multi-env-cicd",
       github: "https://github.com/Pranavmc/multi-env-cicd"
+    },
+    {
+      title: "DevPulse — Cloud-Native Microservices Platform",
+      category: "DevOps",
+      description: "A production-grade cloud-native microservices platform featuring three independent Node.js microservices. Orchestrated with AWS EKS (v1.32), automated via GitHub Actions CI/CD, and provisioned with Terraform IaC. Includes full observability with Prometheus and Grafana.",
+      tech: ["AWS EKS", "Terraform", "Kubernetes", "Docker", "Helm", "GitHub Actions", "Prometheus", "Grafana", "Node.js", "PostgreSQL", "MongoDB", "Redis"],
+      icon: <FaCloud size={30} />,
+      color: "var(--accent-cyan)",
+      link: "https://github.com/Pranavmc/devpulse",
+      github: "https://github.com/Pranavmc/devpulse"
     }
   ];
 
