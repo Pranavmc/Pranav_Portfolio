@@ -37,14 +37,14 @@ const Projects = () => {
       github: "https://github.com/Pranavmc/Automated-CI-CD"
     },
     {
-      title: "End-to-End Infra Automation & Deployment",
+      title: "CloudForge - End-to-End Infrastructure Automation",
       category: "DevOps",
-      description: "Automated cloud infrastructure provisioning with Terraform and configuration management using Ansible. Deployed and managed scalable Kubernetes applications via CI/CD pipelines with automated builds, image creation, and cluster updates.",
-      tech: ["Terraform", "Ansible", "Kubernetes", "Docker", "Jenkins/GitHub Actions", "AWS", "Git", "Linux", "Shell Scripting"],
+      description: "Production-grade AWS DevOps project that provisions a VPC with public/private subnets, bastion access, NAT routing, and Kubernetes nodes using Terraform. Ansible configures containerd and bootstraps a kubeadm cluster, while GitHub Actions automates linting, tests, security scans, Docker Hub publishing, and Kubernetes deployment for a Node.js API.",
+      tech: ["AWS", "Terraform", "Ansible", "Kubernetes", "kubeadm", "containerd", "Docker", "GitHub Actions", "Docker Hub", "Node.js", "Express", "Trivy", "Checkov"],
       icon: <FaLayerGroup size={30} />,
       color: "var(--accent-cyan)",
-      link: "#",
-      github: "#"
+      link: "https://github.com/Pranavmc/cloudforge-devops.git",
+      github: "https://github.com/Pranavmc/cloudforge-devops.git"
     },
     {
       title: "Multi-Environment CI/CD Pipeline (Dev → QA → Prod)",
